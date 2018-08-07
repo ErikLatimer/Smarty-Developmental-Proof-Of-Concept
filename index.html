@@ -1,12 +1,48 @@
 <!DOCTYPE html>
     <html>
-        <Head>
+        <head>
             <meta charset="UTF-8">
-             <title>Hello World</title>
-        </Head>
+            <title>Hello World</title>
+            <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+            <!-- Insert this line above script imports  -->
+            <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+            <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+            <script type="text/javascript" src="semantic/dist/semantic.min.js"></script>
+            <script type="text/javascript" src="build/babeled_through.js"></script>
+
+            <script>if (window.module) module = window.module;</script></style>
+        </head>
         <body>
-            <script> src="/react_renderer.js"</script>
+            <div class="dimmed pusher">
+                <div class="ui container">
+                    <div class="ui text menu">
+                        <a class="item">
+                            <i class="sidebar icon"></i>
+                            Menu
+                        </a>
+                        <div class="ui right menu">
+                            <a class="item">
+                                <i class="user outline icon"></i>
+                                Me
+                            </a>
+                            <a class="item">
+                                <i class="chart line icon"></i>
+                                Market
+                            </a>
+                            <a class="item">
+                                <i class="balance scale icon"></i>
+                                Trade
+                            </a>
+                            <a class="item">
+                                <i class="microchip icon"></i>
+                                AI
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
             <div id="entry"></div>
-        </body>
-        
+        </body> 
     </html>

@@ -2,9 +2,11 @@
   "name": "leave_project",
   "version": "1.0.0",
   "description": "Leave it behind.",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,17 @@
   "homepage": "https://github.com/ErikLatimer/Leave#readme",
   "dependencies": {
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "semantic-ui": "^2.3.3",
+    "semantic-ui-react": "^0.82.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-react": "^6.24.1",
+    "electron": "2.0.6",
+    "null-loader": "^0.1.1",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0"
   }
 }
