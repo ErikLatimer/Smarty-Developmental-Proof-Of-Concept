@@ -1,6 +1,7 @@
 <!DOCTYPE html>
     <html>
         <head>
+
             <meta charset="UTF-8">
             <title>Hello World</title>
             <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
@@ -9,32 +10,34 @@
 
             <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
             <script type="text/javascript" src="semantic/dist/semantic.min.js"></script>
-            <script type="text/javascript" src="build/babeled_through.js"></script>
-
+            
             <script>if (window.module) module = window.module;</script></style>
+
         </head>
         <body>
+
+            <div id="contextual_sidebar" class="ui inverted vertical sidebar menu"></div>
             <div class="dimmed pusher">
                 <div class="ui container">
                     <div class="ui text menu">
-                        <a class="item">
+                        <a id="sidebar_menu_button" class="item">
                             <i class="sidebar icon"></i>
                             Menu
                         </a>
-                        <div class="ui right menu">
-                            <a class="item">
+                        <div id="focus_menu" class="ui right menu">
+                            <a id="user_focus" class="item">
                                 <i class="user outline icon"></i>
                                 Me
                             </a>
-                            <a class="item">
+                            <a id="market_focus" class="item">
                                 <i class="chart line icon"></i>
                                 Market
                             </a>
-                            <a class="item">
+                            <a id="trade_focus" class="item">
                                 <i class="balance scale icon"></i>
                                 Trade
                             </a>
-                            <a class="item">
+                            <a id="ai_focus" class="item">
                                 <i class="microchip icon"></i>
                                 AI
                             </a>
@@ -42,7 +45,34 @@
                     </div>
                 </div>
             </div>
-               
-            <div id="entry"></div>
+
+
+
+            <script>
+                $('#user_focus').data('in_focus', false);
+                $('#market_focus').data('in_focus',true);
+                $('#trade_focus').data('in_focus', false);
+                $('#ai_focus').data('in_focus', false);
+            </script>
+
+            <!-- Make sure the reference to the babel processed React source is
+                linked below your link to jquery because the items that react is trying
+                to refer to won't exist, because the global $ symbol won.t be defined,
+                rendering the $('document').ready() pretty useless. We use this jquery
+                function in order to make sure that the elements referred to by the
+                ReactDOM actually exists even though we link the source file above the
+                HTML. Remeber, Javascript is synchronous so it happnes almost in an 
+                instant.
+            -->
+
+            <!-- Make sure the reference to the babel processed React source is
+                linked below your actual html because the items that react is trying
+                to refer to won't exist, acusing them to not render at all according
+                to your react
+            -->
+            <script type="text/javascript" src="build/babeled_through.js"></script>
+
         </body> 
+
+
     </html>
