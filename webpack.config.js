@@ -1,5 +1,5 @@
 module.exports = {
-    entry: __dirname + "/react_renderer.js",
+    entry: __dirname + "/index.js",
     module: {
         rules: [
             {
