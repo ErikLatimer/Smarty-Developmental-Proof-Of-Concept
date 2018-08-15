@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+import { focus_Menu } from "./focus_Menu";
 
 export class contextual_Sidebar {
 
@@ -12,6 +13,15 @@ export class contextual_Sidebar {
      * 2. Make all the constant variables uppercase.
      * 
      * 3. I also want to make the sidebar items appear active when they are selected.
+     * 
+     * 4. I want to dynamically load in the focus menu here through the docuemnt class,
+     *    and seperate the responsiblility of the focus menu to another js file.
+     * 
+     * 5. Seperate the responsibilities of the focus menu and contextual sidebar into 
+     *    two differnet files.
+     * 
+     * 6. Dynamically generate and load in the menu button for, and the contextual sidebar.
+     *    
      * 
     */
 
@@ -35,163 +45,119 @@ export class contextual_Sidebar {
      * 
     */
 
+    // If you want to add sidebar items, all you have to do is specify a new array 
+    // variable here, then add a key and that new array in the map below the
+    // arrays. Make sure that the key map corresponds to the HTML property 
+    // in that focus item. That's it. Everything else will take care of itself.
 
-    static user_focus_items = ['Profile', 'Profit', 'Account', 'Friends', 'Competition', 'Status'];
-    static market_focus_items = [
+    static USER_FOCUS_ITEMS = ['Profile', 'Profit', 'Account', 'Friends', 'Competition', 'Status'];
+    static MARKET_FOCUS_ITEMS = [
         'Markets', 'News Feed', 'Charts', 'Techniqual Indicators', 'Tables',
         'TEMP DEFAULTS BELOW', 'EUR/USD', 'USD/JPY', 'GBP/USD'
     ];
-    static trade_focus_items = [
+    static TRADE_FOCUS_ITEMS = [
         'TEMP DEFAULTS BELOW', 'Contracts', 'Epics', 'Subscription'
     ];
-    static ai_focus_items = [
+    static AI_FOCUS_ITEMS = [
         'Home', 'TEMP DEFAULTS IS BELOW', 'Performance', 'Learn', 'Study'
     ];
-
-    // Make sure if your going to change any of the below items, that you
-    // also change the index.html accordingly aswell, because all of these
-    // id's and selectors at the end of the day correspond to the HTML.
-
-    static focus_user_id = ("user_focus");
-    static jquery_focus_user_selector = ("#" + contextual_Sidebar.focus_user_id);
-
-    static focus_market_id = ("market_focus");
-    static jquery_focus_market_selector = ("#" + contextual_Sidebar.focus_market_id);
-
-    static focus_trade_id = ("trade_focus");
-    static jquery_focus_trade_selector = ("#" + contextual_Sidebar.focus_trade_id);
-
-    static focus_ai_id = ("ai_focus");
-    static jquery_focus_ai_selector = ("#" + contextual_Sidebar.focus_ai_id);
-
-    static data_in_focus = ("in_focus");
-    static ending_id_identifier_focus = ("_focus");
-    static element_for_focus = ("a");
-
-    static items;
-    static user_defined_items;
-    static settings;
-
-    static render_object;
-
-    static sidebar_contextual_id = ("contextual_sidebar");
-    static jquery_sidebar_contextual_selector = ("#" + contextual_Sidebar.sidebar_contextual_id);
-
-    static button_for_sidebar_contextual_id = ("sidebar_menu_button");
-    static jquery_button_for_sidebar_contextual_selector = ("#" + contextual_Sidebar.button_for_sidebar_contextual_id);
-
-    static enable(){
-        contextual_Sidebar.register_On_Click_Events_For_Focus_Menu();
-        contextual_Sidebar.register_On_Click_Event_For_Menu_Button();
-        contextual_Sidebar.click_Default_Focus();
-    }
-
-
-
-
-    static register_On_Click_Events_For_Focus_Menu() {
-        // Handles when the user_focus menu is clicked
-        $(contextual_Sidebar.jquery_focus_user_selector).click(function () {
-            // The .map function calls a callback function for each item in the array 
-            // the map function was used on. This could be any function. Here we 
-            // use a nameless function.
-            contextual_Sidebar.items = contextual_Sidebar.user_focus_items.map( (user_focus_items) =>
-                <a class="item">{user_focus_items}</a>
-            );
-            contextual_Sidebar.jquery_Focus_Click_Handler(contextual_Sidebar.jquery_focus_user_selector);
-        });
-        // Handles when the market_focus menu is clicked
-        $(contextual_Sidebar.jquery_focus_market_selector).click(function () {
-            contextual_Sidebar.items = contextual_Sidebar.market_focus_items.map((market_focus_items) =>
-                <a class="item">{market_focus_items}</a>
-            );
-            contextual_Sidebar.jquery_Focus_Click_Handler(contextual_Sidebar.jquery_focus_market_selector);
-        });
-        // Handles the trade_focus menu is clicked
-        $(contextual_Sidebar.jquery_focus_trade_selector).click(function () {
-            contextual_Sidebar.items = contextual_Sidebar.trade_focus_items.map( (trade_focus_items) =>
-                <a class="item">{trade_focus_items}</a>
-            );
-            contextual_Sidebar.jquery_Focus_Click_Handler(contextual_Sidebar.jquery_focus_trade_selector);
-        });
-        // Handles the ai_focus menu is clicked
-        $(contextual_Sidebar.jquery_focus_ai_selector).click(function () {
-            contextual_Sidebar.items = contextual_Sidebar.ai_focus_items.map((ai_focus_items) =>
-                <a class="item">{ai_focus_items}</a>
-            );
-            contextual_Sidebar.jquery_Focus_Click_Handler(contextual_Sidebar.jquery_focus_ai_selector);
-        });
-    }
-    static register_On_Click_Event_For_Menu_Button() {
-        $(contextual_Sidebar.jquery_button_for_sidebar_contextual_selector).click(function () {
-            contextual_Sidebar.toggle_Contextual_Sidebar();
-        });
-    }
-    static click_Default_Focus() {
-        // Make sure to register the click events for the focus' before this method
-
-        // Initial initialization of the context bar
-
-        // Note that this method only simulates and triggers a 'click' event.
-        // It handles, nor does nothing more than that.
-        if ($(contextual_Sidebar.jquery_focus_user_selector).data(contextual_Sidebar.data_in_focus)) {
-            $(contextual_Sidebar.jquery_focus_user_selector).trigger('click');
-        }
-
-        else if ($(contextual_Sidebar.jquery_focus_market_selector).data(contextual_Sidebar.data_in_focus)) {
-            $(contextual_Sidebar.jquery_focus_market_selector).trigger('click');
-        }
-
-        else if ($(contextual_Sidebar.jquery_focus_trade_selector).data(contextual_Sidebar.data_in_focus)) {
-            $(contextual_Sidebar.jquery_focus_trade_selector).trigger('click');
-        }
-
-        else if ($(contextual_Sidebar.jquery_focus_ai_selector).data(contextual_Sidebar.data_in_focus)) {
-            $(contextual_Sidebar.jquery_focus_ai_selector).trigger('click');
-        }
-        else { console.log("ERROR WITHIN | FILE: [react_renderer.js] | No default focus selected."); }
-    }
+    static SIDEBAR_ITEMS_MAP = {
+        "user_focus_items": contextual_Sidebar.USER_FOCUS_ITEMS,
+        "market_focus_items": contextual_Sidebar.MARKET_FOCUS_ITEMS,
+        "trade_focus_items": contextual_Sidebar.TRADE_FOCUS_ITEMS,
+        "ai_focus_items": contextual_Sidebar.AI_FOCUS_ITEMS
+    };
     
-    
+    static active_Sidebar_Item_Element_Object;
+
+    // I changed these
+    static CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT = "a";
+    static CONTEXTUAL_SIDEBAR_ID = ("contextual_sidebar");
+    static CONTEXTUAL_SIDEBAR_SELECTOR = ("#" + contextual_Sidebar.CONTEXTUAL_SIDEBAR_ID);
+    static CONTEXTUAL_SIDEBAR_BUTTON_ID = ("sidebar_menu_button");
+    static CONTEXTUAL_SIDEBAR_BUTTON_SELECTOR = ("#" + contextual_Sidebar.CONTEXTUAL_SIDEBAR_BUTTON_ID);
 
 
+    static enable() {
+        var cS = contextual_Sidebar;
+        cS.register_On_Click_Event_For_Contextual_Sidebar_Button();
+    }
 
-    // Handles when a focus is selected/clicked
-    static jquery_Focus_Click_Handler(jquery_focus_selector) {
-        let render_object;
-        // Makes sure that every other focus item available in the right menu is NOT in focus and NOT active.
-        $(contextual_Sidebar.element_for_focus + '[id$="' + contextual_Sidebar.ending_id_identifier_focus + '"]').data(contextual_Sidebar.data_in_focus, false);
-        $(contextual_Sidebar.element_for_focus + '[id$="' + contextual_Sidebar.ending_id_identifier_focus + '"]').removeClass('active');
-        // Sets the newly selected focus' in_focus data value to true.
-        $(jquery_focus_selector).data(contextual_Sidebar.data_in_focus, true);
-        // When a focus is selected, it will appear as active.
-        $(jquery_focus_selector).addClass('active');
-        // Logs which focus item was selected
-        console.log(jquery_focus_selector + " Clicked");
-        // The render object concatenates three different elements to form the items for
-        // the sidebar menu. user_defined_items and the settings elements are not
-        // determined in this function.
-        render_object = [contextual_Sidebar.items, contextual_Sidebar.user_defined_items, contextual_Sidebar.settings];
-        // Render the menu items to the contextual_sidebar
+    // CHECKED FOR NEW SEPERATION
+    static focus_Menu_Item_Clicked(jquery_Selector_For_Focus_Menu_Item) {
+        // Populates the sidebar based on the clicked focus menu item's HTML attribute.
+        // Their HTML attribute is compared against the map variable's keys.
+        // We could probably customize the class and Element now of the sidebar items
+        // Since this is the class to oversee these things.
+
+        // Right now, this is looking like the place to handle user defined sidebar items
+        // and user settings. Make sure to incorperate that sooner or later.
+
+        var cS = contextual_Sidebar;
+        var sidebar_items_to_render_map = cS.SIDEBAR_ITEMS_MAP;
+
+        var elements_to_render;
+        var selector = jquery_Selector_For_Focus_Menu_Item;
+        var sidebar_items_attribute = focus_Menu.FOCUS_MENU_ITEMS_SIDEBAR_ITEMS_HTML_ATTRIBUTE;
+
+        elements_to_render = sidebar_items_to_render_map[($(selector).attr(sidebar_items_attribute))].map(
+            (stuff) =>
+                <a class="item">{stuff}</a>
+        );
 
         // $$$ I don't know why it fixed the problem but it did.
-        if ($(contextual_Sidebar.jquery_sidebar_contextual_selector).has(contextual_Sidebar.element_for_focus)) {
-            $(contextual_Sidebar.jquery_sidebar_contextual_selector).children(contextual_Sidebar.element_for_focus).off("click");
-        }
+        // Basically, I turned off the click function for all of contextual side_bar's 
+        // children.
+        cS.deregister_On_Click_Event_For_Contextual_Sidebar_Items();
 
-        contextual_Sidebar.render_To_Screen(render_object, contextual_Sidebar.sidebar_contextual_id)
+        cS.render_To_Screen(elements_to_render, cS.CONTEXTUAL_SIDEBAR_ID)
 
-        // Everytime I pull up a new focus, the items in the logs' click function 
-        // or the Logged logs are stacking on each other.
-        $(contextual_Sidebar.jquery_sidebar_contextual_selector).children(contextual_Sidebar.element_for_focus).click(function () {
-            contextual_Sidebar.toggle_Contextual_Sidebar();
-        });
+        cS.register_On_Click_Event_For_Contextual_Sidebar_Items();
+
+    };
+
+    // This registers a click function for all CURRENT items under contextual_sidebar to 
+    // toggle the sidebar when clicked.
+    // It also sends and html element back on what sidebar item was clicked.
+    static register_On_Click_Event_For_Contextual_Sidebar_Items(){
+        var cS = contextual_Sidebar;
+        $(cS.CONTEXTUAL_SIDEBAR_SELECTOR).children(cS.CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT).click(
+            function (caller) {
+                cS.toggle_Contextual_Sidebar();
+                cS.active_Sidebar_Item_Element_Object = caller.target;
+                console.log(caller.target);
+            }
+        );
+
+    };
+
+
+    static deregister_On_Click_Event_For_Contextual_Sidebar_Items(){
+        var cS = contextual_Sidebar;
+        if ($(cS.CONTEXTUAL_SIDEBAR_SELECTOR).has(cS.CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT)) {
+            $(cS.CONTEXTUAL_SIDEBAR_SELECTOR).children(cS.CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT).off("click");
+        };
 
     }
+
+    static register_On_Click_Event_For_Contextual_Sidebar_Button() {
+        var cS = contextual_Sidebar;
+        $(cS.CONTEXTUAL_SIDEBAR_BUTTON_SELECTOR).click(function () {
+            cS.toggle_Contextual_Sidebar();
+        });
+    }
+
+    static active_item() {
+        var cS = contextual_Sidebar;
+        return (cS.active_Sidebar_Item_Element_Object);
+    }
+
     // Toggles the contextual_sidebar
     static toggle_Contextual_Sidebar() {
-        $(contextual_Sidebar.jquery_sidebar_contextual_selector).sidebar('toggle');
+        var cS = contextual_Sidebar;
+        $(cS.CONTEXTUAL_SIDEBAR_SELECTOR).sidebar('toggle');
     }
+
     // Handles the ReactDOM rendering for the methods.
     static render_To_Screen(render_element, id_of_root) {
         ReactDOM.render(
