@@ -68,7 +68,6 @@ export class focus_Menu {
             $(selector).click(function () {
                 // Calls the contextual_Sidebar to populate the sidebar based
                 // on the focus menu item just clicked.
-                console.log(selector+" Clicked");
                 contextual_Sidebar.focus_Menu_Item_Clicked(selector);
                 fM.focus_Menu_Item_Clicked(selector);
             });
@@ -89,7 +88,6 @@ export class focus_Menu {
         // When a focus is selected, it will appear as active.
         $(selector).addClass('active');
         // Logs which focus item was selected
-        console.log(selector + " Clicked");
 
     }
 

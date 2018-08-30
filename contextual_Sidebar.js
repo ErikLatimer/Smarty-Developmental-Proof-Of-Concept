@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-import { focus_Menu } from "./focus_Menu";
+import { focus_Menu } from './focus_Menu';
+import { sidebar_Item } from './contextual_Sidebar_Item';
+import { renderer } from './renderer';
 
 export class contextual_Sidebar {
 
@@ -50,24 +52,92 @@ export class contextual_Sidebar {
     // arrays. Make sure that the key map corresponds to the HTML property 
     // in that focus item. That's it. Everything else will take care of itself.
 
-    static USER_FOCUS_ITEMS = ['Profile', 'Profit', 'Account', 'Friends', 'Competition', 'Status'];
+
+    /*
+     * The reason why I have hard coded strings within the user_focus_items is because 
+     * I would have to import every single module within contextual_sidebar in order
+     * to NOT have each render pane's tag hard coded as a string here. Would I did
+     * instead is put all of the render pane module imports in the render.js
+     * becuase that's what that js file is suppose to handle. Then it will compare the
+     * hard coded string tags here with the module's string tag ( in the render pane 
+     * individual module ). However, these strings will not be hard coded in the renderer.js.
+     * Instead they will make a call to each module.
+     *  
+    */
+
+    /*
+     * In order to implement the above comment, MAJOR changes still need to be made 
+     * to this file.
+     * 
+    */
+    static USER_FOCUS_ITEMS = [
+        new sidebar_Item ( 'Profile', sidebar_Item.render_map.Profile ),
+        new sidebar_Item ( 'Profit', sidebar_Item.render_map.Profit ),
+        new sidebar_Item ( 'Account', sidebar_Item.render_map.Account ),
+        new sidebar_Item ( 'Friends', sidebar_Item.render_map.Friends ),
+        new sidebar_Item ( 'Competition', sidebar_Item.render_map.Competition ),
+        new sidebar_Item ( 'Status', sidebar_Item.render_map.Status )
+    ];
     static MARKET_FOCUS_ITEMS = [
-        'Markets', 'News Feed', 'Charts', 'Techniqual Indicators', 'Tables',
-        'TEMP DEFAULTS BELOW', 'EUR/USD', 'USD/JPY', 'GBP/USD'
+        new sidebar_Item ( 'Market', sidebar_Item.render_map.Market ),
+        new sidebar_Item ( 'News Feed', sidebar_Item.render_map.News_Feed ),
+        new sidebar_Item ( 'Charts', sidebar_Item.render_map.Charts ),
+        new sidebar_Item ( 'Techniqual Indicators', sidebar_Item.render_map.Techniqual_Indicators ),
+        new sidebar_Item ( 'Tables', sidebar_Item.render_map.Tables ),
+        new sidebar_Item ( 'TEMP DEFAULTS BELOW', sidebar_Item.render_map.TEMP_DEFAULTS_BELOW ),
+        new sidebar_Item ( 'EUR/USD', sidebar_Item.render_map.EUR_USD ),
+        new sidebar_Item ( 'USD/JPY', sidebar_Item.render_map.USD_JPY ),
+        new sidebar_Item ( 'GBP/USD', sidebar_Item.render_map.GBP_USD )
     ];
+    /*
+     *   static MARKET_FOCUS_ITEMS = [
+     *      'Markets', 'News Feed', 'Charts', 'Techniqual Indicators', 'Tables',
+     *      'TEMP DEFAULTS BELOW', 'EUR/USD', 'USD/JPY', 'GBP/USD'
+     *   ];
+     * 
+    */
     static TRADE_FOCUS_ITEMS = [
-        'TEMP DEFAULTS BELOW', 'Contracts', 'Epics', 'Subscription'
+        new sidebar_Item ( 'TEMP DEFAULTS BELOW', sidebar_Item.render_map.TEMP_DEFAULTS_BELOW ),
+        new sidebar_Item ( 'Contracts', sidebar_Item.render_map.Contracts ),
+        new sidebar_Item ( 'Epics', sidebar_Item.render_map.Epics ),
+        new sidebar_Item ( 'Subscription', sidebar_Item.render_map.Subscription )
     ];
+    
+    /*
+     *  static TRADE_FOCUS_ITEMS = [
+     *     'TEMP DEFAULTS BELOW', 'Contracts', 'Epics', 'Subscription'
+     *   ];
+     * 
+    */
+
     static AI_FOCUS_ITEMS = [
-        'Home', 'TEMP DEFAULTS IS BELOW', 'Performance', 'Learn', 'Study'
+        new sidebar_Item ( 'Home', sidebar_Item.render_map.Home ),
+        new sidebar_Item ( 'TEMP DEFAULTS IS BELOW', sidebar_Item.render_map.TEMP_DEFAULTS_BELOW ),
+        new sidebar_Item ( 'Performance', sidebar_Item.render_map.Performance ),
+        new sidebar_Item ( 'Learn', sidebar_Item.render_map.Learn ),
+        new sidebar_Item ( 'Study', sidebar_Item.render_map.Study )
     ];
+
+
+    /*
+     *  static AI_FOCUS_ITEMS = [
+     *     'Home', 'TEMP DEFAULTS IS BELOW', 'Performance', 'Learn', 'Study'
+     *  ];
+     * 
+    */
+
+    // This map maps the array sidebar items based on the values 
+    // in the HTML items under the focus menu with the attribute
+    // focus_Menu.FOCUS_MENU_ITEMS_SIDEBAR_ITEMS_HTML_ATTRIBUTE.
+    // If that attribute matches any of these below, it renders
+    // this array.
     static SIDEBAR_ITEMS_MAP = {
         "user_focus_items": contextual_Sidebar.USER_FOCUS_ITEMS,
         "market_focus_items": contextual_Sidebar.MARKET_FOCUS_ITEMS,
         "trade_focus_items": contextual_Sidebar.TRADE_FOCUS_ITEMS,
         "ai_focus_items": contextual_Sidebar.AI_FOCUS_ITEMS
     };
-    
+
     static active_Sidebar_Item_Element_Object;
 
     // I changed these
@@ -101,8 +171,8 @@ export class contextual_Sidebar {
         var sidebar_items_attribute = focus_Menu.FOCUS_MENU_ITEMS_SIDEBAR_ITEMS_HTML_ATTRIBUTE;
 
         elements_to_render = sidebar_items_to_render_map[($(selector).attr(sidebar_items_attribute))].map(
-            (stuff) =>
-                <a class="item">{stuff}</a>
+            (sidebar_items) =>
+                <a class="item">{sidebar_items.name}</a>
         );
 
         // $$$ I don't know why it fixed the problem but it did.
@@ -118,21 +188,52 @@ export class contextual_Sidebar {
 
     // This registers a click function for all CURRENT items under contextual_sidebar to 
     // toggle the sidebar when clicked.
-    // It also sends and html element back on what sidebar item was clicked.
-    static register_On_Click_Event_For_Contextual_Sidebar_Items(){
+    // It also sends and html element back on what sidebar item was clicked.\
+    
+    // THIS WILL EVENTUALLY HAVE TO INCLUDE THE renderer.js MODULE FOR RENDERING THE
+    // CORRECT PANE WHEN THE CONTEXTUAL SIDEBAR ITEM IS CLICKED.
+
+    // I'm thinking we loop through the sidebar_items_to_render_amp,
+    // which will effectively loop through all of the arrays of sidebar_items,
+    // and match the element's inner html with the name of the array item, then
+    // call the render.js module attached to that object.
+    static register_On_Click_Event_For_Contextual_Sidebar_Items() {
         var cS = contextual_Sidebar;
+        var sim = cS.SIDEBAR_ITEMS_MAP;
+        var sim_keys = Object.keys(sim);
+        var sb_items;
+        var item;
         $(cS.CONTEXTUAL_SIDEBAR_SELECTOR).children(cS.CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT).click(
             function (caller) {
                 cS.toggle_Contextual_Sidebar();
+                console.log ( caller.target );
                 cS.active_Sidebar_Item_Element_Object = caller.target;
-                console.log(caller.target);
+                console.log ( "Caller's innerHTML: " + caller.target.innerHTML );
+                for ( let items_array = 0; items_array < sim_keys.length; ++items_array ){
+                    sb_items = sim[sim_keys[items_array]];
+                    for ( let items = 0; items < sb_items.length; ++items ) {
+                        item = sb_items[items];
+                        console.log( "Current item: " + item.name );
+                        if ( caller.target.innerHTML == item.name ) {
+                            // If the inner HTML of the caller matches the name of 
+                            // the sidebar item within the specific array, call
+                            // the reneder module with the sidebar item's 
+                            // specific render module.
+                            console.log( "We have a match: " + item.name );
+                            //renderer.render( item.name, item.pane );
+                            return;
+                        }
+                    }
+
+                }
+
             }
         );
 
     };
 
 
-    static deregister_On_Click_Event_For_Contextual_Sidebar_Items(){
+    static deregister_On_Click_Event_For_Contextual_Sidebar_Items() {
         var cS = contextual_Sidebar;
         if ($(cS.CONTEXTUAL_SIDEBAR_SELECTOR).has(cS.CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT)) {
             $(cS.CONTEXTUAL_SIDEBAR_SELECTOR).children(cS.CONTEXTUAL_SIDEBAR_ITEMS_ELEMENT).off("click");
@@ -159,6 +260,8 @@ export class contextual_Sidebar {
     }
 
     // Handles the ReactDOM rendering for the methods.
+    
+    // I actually want to sperate this responsibility to the renderer.js module.
     static render_To_Screen(render_element, id_of_root) {
         ReactDOM.render(
             render_element,
