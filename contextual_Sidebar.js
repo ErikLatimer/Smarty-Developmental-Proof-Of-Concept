@@ -147,7 +147,9 @@ export class contextual_Sidebar {
     static CONTEXTUAL_SIDEBAR_BUTTON_ID = ("sidebar_menu_button");
     static CONTEXTUAL_SIDEBAR_BUTTON_SELECTOR = ("#" + contextual_Sidebar.CONTEXTUAL_SIDEBAR_BUTTON_ID);
 
-
+    // The sidebar calculations and stuff are still performed, this moreso just like
+    // hides it from sight. In a future update, I would like this sidebar to not perform
+    // ANY calculations prior to being enebled, not even taking up any resources.
     static enable() {
         var cS = contextual_Sidebar;
         cS.register_On_Click_Event_For_Contextual_Sidebar_Button();
@@ -220,6 +222,8 @@ export class contextual_Sidebar {
                             // the reneder module with the sidebar item's 
                             // specific render module.
                             console.log( "We have a match: " + item.name );
+                            // This method is not yet implemented yet in the renderer class.
+                            renderer.renderPane( item.name, item.pane );
                             //renderer.render( item.name, item.pane );
                             return;
                         }

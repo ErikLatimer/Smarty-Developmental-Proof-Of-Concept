@@ -11,7 +11,9 @@ export class focus_Menu {
     static FOCUS_MENU_ITEM_CLASS = "item";
     static FOCUS_MENU_ITEMS_SIDEBAR_ITEMS_HTML_ATTRIBUTE = "sidebar-items";
 
-
+    // The focus menu is still visible, however, it just doesn't do anythin when you click on an
+    // item. In a future update I would like to make the menu appear to be grayed out or non-existent
+    // entirely, as to not take up ANY resources prior to being enabled.
     static enable() {
         var fM = focus_Menu;
         fM.register_On_Click_Events_For_Focus_Menu_Items();
