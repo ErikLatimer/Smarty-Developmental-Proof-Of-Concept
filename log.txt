@@ -1,0 +1,97 @@
+
+/**
+ * var subscription = new ls.Subscription( 'RAW', "EURUSD", ["price"] );
+ *    subscription.addListener ( {
+ *    onSubscription: function() { console.log( "subscription success!!" ); },
+ *    onItemUpdate: function( updateObj ) { console.log( updateObj ); },
+ *    onUnsubscription: function () { console.log ( 'unsubscribed ' ); }
+ * });
+*/
+
+/**
+ * 
+ *         
+ * var count = 0;
+ * var client = new ls.LightstreamerClient("http://localhost:8080", ADAPTERSET);
+   client.connect();
+ * 
+var subscription = new ls.Subscription('RAW', "EURUSD", ["price", "bid", "ask", "timestamp"]);
+subscription.addListener({
+    onSubscription: function () { console.log("subscription success!!"); },
+    onItemUpdate: function (updateObj) {
+        if (count > 2) {
+            client.disconnect();
+        }
+        console.log(updateObj);
+        count++;
+    },
+    onUnsubscription: function () { console.log('unsubscribed '); }
+});
+ * 
+ */
+
+
+
+var count = 0;
+
+var subscription = new ls.Subscription('RAW', "EURUSD", ["price", "bid", "ask", "timestamp"]);
+subscription.addListener({
+   onSubscription: function () { console.log("subscription success!!"); },
+   onItemUpdate: function (updateObj) {
+       if (count > 2) {
+           client.disconnect();
+       }
+       console.log(updateObj);
+       count++;
+   },
+   onUnsubscription: function () { console.log('unsubscribed '); }
+});
+
+/*
+async function test () {
+    var client = new ls.LightstreamerClient("http://localhost:8080", ADAPTERSET);
+    client.connect();
+    var clientlistener = {
+        onError: function( originalMessage ) { 
+            console.log( "Error" );
+            console.log(originalMessage);
+         },
+        onAbort: function( originalMessage, sentOnNetwork ) { 
+            console.log("Abort"); 
+            console.log ( originalMessage );
+            console.log( sentOnNetwork );
+        },
+        onDeny: function(originalMessage, code, message) { 
+            console.log("Deny"); 
+            console.log( originalMessage );
+            console.log(code);
+            console.log(message);
+        },
+        onDiscarded: function(originalMessage){
+            console.log(originalMessage);
+        },
+        onProcessed: function() { 
+            console.log( "Processed" );
+            console.log( onProcessed );
+        }
+    }
+    var jsonObject = {
+        'command': 'CREATE',
+        'currencyPair': 'EURUSD',
+        'startDate': {
+            'year': 2018,
+            'monthIndex': 8,
+            'day': 29,
+            'hour': 13,
+            'minute': 30,
+            'second': 45
+        },
+        'timePassPerTick': 1000,
+        'UID': '85d79873bde4a7fc93a4471a8344dda3' // This is and MD5 hash
+    }
+    
+    await client.sendMessage( JSON.stringify(jsonObject), "UNORDERED_MESSAGES", 4, clientlistener, false );
+    
+}
+test();
+*/

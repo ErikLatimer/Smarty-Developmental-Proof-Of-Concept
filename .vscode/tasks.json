@@ -6,7 +6,7 @@
         {
             "label": "nodejs_enviornment_variables",
             "type": "shell",
-            "command": "C:\\Program Files\\nodejs\\nodevars.bat"
+            "command": "cd C:\\Program Files\\nodejs & nodevars.bat"
         },
         {
             "type": "npm",
