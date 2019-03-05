@@ -1,4 +1,8 @@
 { 
-    "presets": ["@babel/preset-react"],
+    // I Make sure to remove @babel/preset-env when using webpack for production version javascript to be shipped with the app when 
+    // were done. Because I'm pretty sure webpack does alot of what the @babel/preset-env does already. And I'm pretty sure
+    // the preset overlaps with the plugins I already have installed now XD.
+    
+    "presets": ["@babel/preset-react", "@babel/preset-env"],
     "plugins": ["transform-class-properties","@babel/plugin-transform-async-to-generator","syntax-async-functions"] 
 }

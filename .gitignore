@@ -1,2 +1,4 @@
 # ignore all the node modules installed. Because the repository would add the save-dependency.
 node_modules/
+# ignores Lightstreamer data serving software for liscensing purposes
+vendor/Lightstreamer
