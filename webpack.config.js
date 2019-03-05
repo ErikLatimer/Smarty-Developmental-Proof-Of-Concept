@@ -7,6 +7,9 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
+                // The babel-loader is actaully an npm module that allows babel to be used with webpack. The babel-loader is NOT a version
+                // of babel itself, so the npm babel package is still required and is required to be set up to run as it would. All the babel-loader
+                // does is run that babel package within webpack.
                 loader: 'babel-loader'
             }
         ]

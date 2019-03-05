@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+    <!-- Running the gulp build tools will compile CSS and Javascript for use in your project. Just link to these files in your HTML along with the latest jQuery. -->
+    <!-- I think I should group the jquery-3.3.1.min.js with the rest of my bundle code because this is the only library I need thats actually added through the HTML. -->
+    <!-- Make sure you update the path of the jquery file to represent it's new vendor location.-->
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <!-- Make sure you update the path of the semantic.min.js file to represent it's new vendor location.-->
+    <script type="text/javascript" src="semantic.min.js"></script>
+
+    <script>if (window.module) module = window.module;</script>
+
+</head>
+
+<body>
+
+    <div id="truefx_login_modal" class="ui modal">
+        <div class="header">Truefx Login</div>
+        <div class="content">
+            <div id="truefx_login_form" class="ui form">
+                <div id="truefx_username_field" class="ui field">
+                    <label>Username:</label>
+                    <input name="truefx_username" type="text" placeholder="Username"></input>
+                </div>
+                <div id="truefx_password_field" class="ui field">
+                    <label>Password:</label>
+                    <input name="turefx_password" type="text" placeholder="Password"></input>
+                </div>
+                <div id="truefx_login_button_field" class="ui field">
+                    <button id="truefx_form_login_button" class="ui green button">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contextual_sidebar" class="ui inverted vertical sidebar menu"></div>
+    <div class="dimmed pusher">
+        <div class="header">
+            <div class="ui container" id="body">
+                <div class="ui text menu">
+                    <a id="sidebar_menu_button" class="item">
+                        <i class="sidebar icon"></i>
+                        Menu
+                    </a>
+                    <div style="padding-left:35px;" class="item">
+                        <button id="nadex_login_button" class="circular tiny ui button">Nadex</button>
+                        <button id="truefx_login_button" class="circular tiny ui button">True FX</button>
+                    </div>
+                    <div id="focus_menu" class="ui right menu">
+                        <a id="user_focus" sidebar-items="user_focus_items" class="item">
+                            <i class="user outline icon"></i>
+                            Me
+                        </a>
+                        <a id="market_focus" sidebar-items="market_focus_items" class="item">
+                            <i class="chart line icon"></i>
+                            Market
+                        </a>
+                        <a id="trade_focus" sidebar-items="trade_focus_items" class="item">
+                            <i class="balance scale icon"></i>
+                            Trade
+                        </a>
+                        <a id="ai_focus" sidebar-items="ai_focus_items" class="item">
+                            <i class="microchip icon"></i>
+                            AI
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content" id="content pane"></div>
+    </div>
+
+
+    <!-- I don't know why I have this IN the HTML file, I should offload this short snippet to the source index file.-->
+    <script>
+        $('#user_focus').data('in_focus', false);
+        $('#market_focus').data('in_focus', true);
+        $('#trade_focus').data('in_focus', false);
+        $('#ai_focus').data('in_focus', false);
+    </script>
+
+    <!-- Make sure the reference to the babel processed React source is
+                linked below your link to jquery because the items that react is trying
+                to refer to won't exist, because the global $ symbol won.t be defined,
+                rendering the $('document').ready() pretty useless. We use this jquery
+                function in order to make sure that the elements referred to by the
+                ReactDOM actually exists even though we link the source file above the
+                HTML. Remeber, Javascript is synchronous so it happnes almost in an 
+                instant.
+    -->
+
+    <!-- Make sure the reference to the babel processed React source is
+                linked below your actual html because the items that react is trying
+                to refer to won't exist, acusing them to not render at all according
+                to your react
+    -->
+    <script type="text/javascript" src="build/babeled_through.js"></script>
+
+</body>
+
+
+</html>

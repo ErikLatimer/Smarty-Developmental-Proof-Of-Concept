@@ -1,0 +1,90 @@
+Complete the Eur/Usd pane
+
+I think we should actually work on splitting the adapter set, because right now the WHOLE ENTIRE PROGRAM is actaully running off of an adapter set named NADEX, and we'll probably
+have an actual lightstreamer adapter set for streaming desered epics and instruments in the future anyway so its probably a good ides to split the adapter set into like
+currencydata and Nadex. To commit such a change, we would need ot go to the adapters.xml, and make a new adapters_conf object. Then, where we specify an adapter set
+in our regualr JSON throughout our program files, replace it with the new name. No work needs to be done to the actual javascript remote general data adapter.
+
+We also hacve to device a mechanicsm when the nodejs runtime enviornment or node envioronment ceases to exists or on exit, unsubscribe to whatever we were subscribed to on lightstreamer
+because right now the lightstreamer itself is unsubscrubung on its own after a few seconds, but imagine millions of users. that wouldnt be efficient enough in a real world secnario. 
+
+Add to the webpack.config.js exclude rules that exclude the build and semantic folders. I actually don't know why we have a semantic 
+folder. Oh its actually for the index html file XDXD.
+
+I want to seperate and organize all my source files into something you would see out of a github project. That however is going to entail
+chaning a lot of import statements that previously imported based on all the source files being in the same folder. One of the reasons
+behind this is not only does it make things more organized, but it actaully helps with this new ESLint module I want ot use. Some 
+files like main.js ( Its the only file I can recall currently within the project that this applies to ) cannot have babel run through it 
+because it is referenced by the electron node module itself to start electron. I mean tecniqually I could, but that leaves room for 
+errors based on babel and stuff and I don't want to mix that with electron. And we would have to make main.js a second entry point
+of webpack.
+From Webpack's website: "The import and export statements have been standardized in ES2015 and are supported in most browsers.
+Some older browsers still lag behind but webpack supports modules out of the box. Behind the scenes, webpack actually "transpiles" 
+the code so that older browsers can also run it. If you inspect dist/main.js, you might be able to see how webpack does this,
+it's quite ingenious! Besides import and export, webpack supports various other module syntaxes as well, see Module API for more
+information.Note that webpack will not alter any code other than import and export statements. If you are using other ES2015
+features, make sure to use a transpiler such as Babel or Bublé via webpack's loader system."
+
+I want to implement the contextual_Sidebar_Item.js with view.js because it actually would be way easier to implement the dynamic item list then in React.
+
+I also want to change the way highStocksOptions.js works so that it may fit into the category of lib, where we can plug and play the highchartsOptions.js in any other application.
+
+I am very worried about the mobile-detect package I use in the highStocksOptions.js under the lib folder because of the user-agent string that electron returns. Electron 
+returns a user-agent string that does not include the device name, only the operating system. Hopefully this will be enough for mobile-detect to pick on the right type of 
+device but I'm just really not sure. We will see once we run emulations. I might have to think of a more consistent way to detect mobile devices. But we'll see.
+
+Make a Postgres.js library file. There will be two versions, one on the server-side because most likely it will run on local host, and one on client side because we'll need a URL.
+I am going to have to use my lightstreamer_Client.js to provide data because I am going to HAVE to connect to my PostGres database. Actaully, But what if I just 
+want a payload of data just right then? What if I don't want to stream data? I already have to connect to my Postgres database. I might have to put the connection
+object and details in a seperate js file sense I will have to use the object and credientails in this file, and it is used in lightstreamer_Client.js.
+
+Dont make plug and play files they really don't make life THAT much easier, because the ultimate plug and play file is just a file that has methods that swap the traditional
+programming syntax thats already present if you were to hard code it.
+
+Clean up the *1000 mess when storing and retrieving timestamps and searching for data using Postgres.
+
+@!!! MAKES SURE THE REFERENCE SEMANTIC UI'S NEW LOCATION IN THE index.html FILE.
+
+Make sure that when the server-side files actually go server side they have all there node npm package dependencies available to them as well as any other 
+dependencies that they might need because for right now some of them have dependencies, but they are rooted within this project.
+
+Alright, I've got some great ideas. First off, we really don't need to use webpack for development purposes because we can just use babel cli. The babel cli
+also makes it so we can keep the folder structure of our babeled through directory, and make it easier to trace errors down as opposed to just getting 
+"in function h.j(.js 1026:45)" like the console would normally read when using webpack to build or bundled js script. The second is incorperating the 
+Hubspot/offline github node js module for event based detection of online/offline status of users. That way, high level modules can decide whether
+to invoke utilility modules if their online of offline or not, and utility modules can focuas on some real errors that are not actaul errors, but just the result
+of a lack of a high level internet connection. But I don't actually have to use or implement this until I get to the higher level modules that use my util modules XD.
+
+TRAIN OF THOUGHT:
+errorHandling.js for use in defaultPostgreSQL.js server-side copy for use in both the 1Forge_Postgresql_Database_Data_Provider_Script.js and the lightstreamer_DataAdapter_Nadex.js,
+then create the defaultPostgreSQL.js for the client-side for use in dataProvider.js to acquire inital bulk data for the chart, THEN organize the rest of the files into the 
+new hiearchy to use and configfure ESLINT then actually finish dataProvider.js then finish lightstreamerClient.js for lib to bb use in other files then finish highStockOptions.js
+because thats why you wanted to create the dataProvider.js module class in the first place so you can finish Highstock options.js so you can flush out the 
+arcitecture for the content panels in the contextual side bar items.
+
+babel does not traverse through dependencies and run babel on them. So importing files that need to be ran through babel, if they 
+haven't been ran through babel already, will only cause a syntax error. However, what we can do is direct babel to babel through a whole directory at one time, 
+so that way all files are in a babel state, so that way when we import them in a file that is ran by electron, all POSSIBLE files that could be used by our
+files that are written in ES6, are already babeled through in that one folder. To do that, it goes something like this "babel ./[source directory] --watch --out-dir [output directory]"
+All of the files are taken, run through babel, and outputed seperately in their own respective files, named the same as their original files, in the output directory specified.
+
+"semantic" the folder is actually very vital to the project, as well at "semantic-ui" the package because semantic-ui the package actually CREATES "semantic" the folder you
+see and use within your project. "semantic-ui" the package runs a set-up kind of neat dialoug with the user asking the user their preferences and what they want upon install.
+It then
+{
+    Copies UI definitions
+    Copies UI themes
+    Copies gulp tasks
+    Adds theme files
+    Creates the gulpfile.js
+    Creates the Semantic Ui config file ( semantic.json )
+    Among many other things...
+}
+So thats why we needed it. Then you run gulp build tools to get you a nice and trimmed folder.
+
+
+I don't know whether our "lightstreamer_Client.js" is confirmed to work. I am assuming it does though.
+
+I think the last thing I was working on was the "react_Render.js". I think...
+
+Include the Lighstreamer in the vendor folder under the .gitignore for liscensing purposes.
