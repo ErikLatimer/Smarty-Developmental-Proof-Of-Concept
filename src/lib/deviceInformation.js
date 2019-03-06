@@ -1,7 +1,7 @@
 import { os } from 'os';
 //const os = require('os');
 
-export static class deviceInformation {
+export class deviceInformation {
     static isDesktop() {
         const NONMOBILECPUMODELNAMES = ['Intel(R) Core(TM)', 'AMD'];
         // Get processor information
@@ -31,5 +31,5 @@ export static class deviceInformation {
             } )
         } );
         return desktop;  
-    };
+    }
 }

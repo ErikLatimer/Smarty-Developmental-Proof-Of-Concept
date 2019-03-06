@@ -8,7 +8,7 @@ import { MobileDetect } from 'mobile-detect';
 const NONMOBILECPUNAMES = ['Intel(R) Core(TM)', 'AMD'];
 
 // This class generates a HighStocks Options Structure and returns it.
-export static class highChartsOption {
+export class highChartsOption {
     // MAKE SURE TO ADD A MOBLIE DEFAULT DETERMININED IN THIS METHOD
     // The only reason why we have a currencyPair variable for the generation of the highStock options structure
     // is to be able to provide the data function for the data field of the options structure. Becuase without a currency

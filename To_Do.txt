@@ -88,3 +88,31 @@ I don't know whether our "lightstreamer_Client.js" is confirmed to work. I am as
 I think the last thing I was working on was the "react_Render.js". I think...
 
 Include the Lighstreamer in the vendor folder under the .gitignore for liscensing purposes.
+
+Branch eslint-setup
+
+I added babel-eslint so that way my parser and my linting matchup, because theres no point of a linter of it doesn't match my parser right? XD
+The problem is I already installed a lot of thrid party peer dependencies for the standard code standard of ESLINT that I probably don't need now,
+and who's rules are pretty illrelevant. Sooo, do I uninstall ESLINT and reinstall? Will that get rid of all the dependencies? 
+
+It didnt. I had to manual uninstall all peer dependencies of eslint standard code standard option AS WELL AS eslint. 
+
+I updated all of the npm packages, because the babel-eslint pacakge needed a babel-core of 7.2.0 or above and I was rocking a babel-coe of 7.1.0 or something like that.
+
+Installing eslint...
+npm install --save-dev eslint
+
+Installing babel-eslint...
+npm install --save-dev babel-eslint
+
+Running the init command for local version of ESLINT...
+.\node_modules\.bin\eslint --init
+
+Now adding the parser line...
+"parser": "babel=eslint"
+
+Okay I think es-lint is properly set up for React AND Babel!
+
+Changed the .gitignore file to ignore the entirety of the vendor folder because of potential liscensing issues.
+
+Changed a little bit of the ReadMe.
